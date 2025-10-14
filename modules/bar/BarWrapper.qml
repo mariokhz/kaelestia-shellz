@@ -14,7 +14,8 @@ Item {
     required property BarPopouts.Wrapper popouts
     required property int borderThickness
 
-    readonly property int padding: Math.max(Appearance.padding.smaller, Config.border.thickness)
+    readonly property int baseThickness: Config.border.thickness
+    readonly property int padding: Math.max(Appearance.padding.smaller, baseThickness)
     readonly property int contentWidth: Config.bar.sizes.innerWidth + padding * 2
     readonly property int exclusiveZone: Config.bar.persistent || visibilities.bar ? contentWidth : borderThickness
     readonly property bool shouldBeVisible: Config.bar.persistent || visibilities.bar || isHovered
@@ -32,8 +33,9 @@ Item {
         content.item?.handleWheel(y, angleDelta);
     }
 
-    visible: width > borderThickness
+    visible: true
     implicitWidth: borderThickness
+    opacity: width > borderThickness ? 1 : 0
 
     states: State {
         name: "visible"
@@ -75,13 +77,15 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
 
-        active: root.shouldBeVisible || root.visible
+        active: true
 
         sourceComponent: Bar {
             width: root.contentWidth
             screen: root.screen
             visibilities: root.visibilities
             popouts: root.popouts
+            opacity: root.shouldBeVisible ? 1 : 0
+            Behavior on opacity { Anim {} }
         }
     }
 }

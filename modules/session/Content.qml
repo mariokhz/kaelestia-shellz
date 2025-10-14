@@ -12,8 +12,8 @@ Column {
 
     required property PersistentProperties visibilities
 
-    padding: Appearance.padding.large
-    spacing: Appearance.spacing.large
+    padding: Appearance.padding.large + 6
+    spacing: Appearance.spacing.large + 6
 
     SessionButton {
         id: logout
@@ -43,18 +43,6 @@ Column {
 
         KeyNavigation.up: logout
         KeyNavigation.down: hibernate
-    }
-
-    AnimatedImage {
-        width: Config.session.sizes.button
-        height: Config.session.sizes.button
-        sourceSize.width: width
-        sourceSize.height: height
-
-        playing: visible
-        asynchronous: true
-        speed: 0.7
-        source: Paths.absolutePath(Config.paths.sessionGif)
     }
 
     SessionButton {
