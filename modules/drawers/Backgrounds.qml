@@ -16,10 +16,11 @@ Shape {
 
     required property Panels panels
     required property Item bar
-    required property int borderThickness
+    // Optional override for border thickness
+    property int borderThickness: Config.border.thickness
 
     anchors.fill: parent
-    anchors.margins: borderThickness
+    anchors.margins: root.borderThickness
     anchors.leftMargin: bar.implicitWidth
     preferredRendererType: Shape.CurveRenderer
 

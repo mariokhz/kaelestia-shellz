@@ -17,7 +17,8 @@ Item {
     required property ShellScreen screen
     required property PersistentProperties visibilities
     required property Item bar
-    required property int borderThickness
+    // Optional override for border thickness
+    property int borderThickness: Config.border.thickness
 
     readonly property alias osd: osd
     readonly property alias notifications: notifications
@@ -30,7 +31,7 @@ Item {
     readonly property alias sidebar: sidebar
 
     anchors.fill: parent
-    anchors.margins: borderThickness
+    anchors.margins: root.borderThickness
     anchors.leftMargin: bar.implicitWidth
 
     Osd.Wrapper {
@@ -93,7 +94,7 @@ Item {
         screen: root.screen
 
         x: isDetached ? (root.width - nonAnimWidth) / 2 : 0
-        y: {
+            y: {
             if (isDetached)
                 return (root.height - nonAnimHeight) / 2;
 

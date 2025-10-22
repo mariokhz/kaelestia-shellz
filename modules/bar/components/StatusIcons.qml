@@ -235,7 +235,7 @@ StyledRect {
                     }
 
                     const perc = UPower.displayDevice.percentage;
-                    const charging = [UPowerDeviceState.Charging, UPowerDeviceState.FullyCharged, UPowerDeviceState.PendingCharge].includes(UPower.displayDevice.state);
+                    const charging = !UPower.onBattery;
                     if (perc === 1)
                         return charging ? "battery_charging_full" : "battery_full";
                     let level = Math.floor(perc * 7);

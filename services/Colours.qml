@@ -63,7 +63,7 @@ Singleton {
             root.scheme = scheme.name;
             flavour = scheme.flavour;
             currentLight = scheme.mode === "light";
-            Quickshell.execDetached(["/home/khz/.config/quickshell/ii_scripts_colors_khz/switchwall.sh", "--no-switch"]);
+	    Quickshell.execDetached(["/home/khz/.config/quickshell/ii_scripts_colors_khz/switchwall.sh", "--no-switch"]);
         } else {
             previewLight = scheme.mode === "light";
         }

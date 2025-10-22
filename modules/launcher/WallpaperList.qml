@@ -11,7 +11,7 @@ PathView {
     id: root
 
     required property StyledTextField search
-    required property var visibilities
+    required property PersistentProperties visibilities
     required property var panels
     required property var content
 
@@ -22,12 +22,12 @@ PathView {
         if (!screen)
             return 0;
 
-        const borderThickness = Visibilities.getBorderThickness(screen);
-        const barMargins = Math.max(borderThickness, panels.bar.implicitWidth);
+        // Screen width - 4x outer rounding - 2x max side thickness (cause centered)
+        const barMargins = Math.max(Config.border.thickness, panels.bar.implicitWidth);
         let outerMargins = 0;
-        if (panels.popouts.hasCurrent && panels.popouts.currentCenter + panels.popouts.nonAnimHeight / 2 > screen.height - content.implicitHeight - borderThickness * 2)
+        if (panels.popouts.hasCurrent && panels.popouts.currentCenter + panels.popouts.nonAnimHeight / 2 > screen.height - content.implicitHeight - Config.border.thickness * 2)
             outerMargins = panels.popouts.nonAnimWidth;
-        if ((visibilities.utilities || visibilities.sidebar) && panels.utilities.implicitWidth > outerMargins)
+        if (visibilities.utilities && panels.utilities.implicitWidth > outerMargins)
             outerMargins = panels.utilities.implicitWidth;
         const maxWidth = screen.width - Config.border.rounding * 4 - (barMargins + outerMargins) * 2;
 

@@ -12,7 +12,8 @@ CustomMouseArea {
     required property PersistentProperties visibilities
     required property Panels panels
     required property Item bar
-    required property int borderThickness
+    // Optional override for border thickness (provided by Drawers)
+    property int borderThickness: Config.border.thickness
 
     property point dragStart
     property bool dashboardShortcutActive
@@ -20,7 +21,7 @@ CustomMouseArea {
     property bool utilitiesShortcutActive
 
     function withinPanelHeight(panel: Item, x: real, y: real): bool {
-        const panelY = borderThickness + panel.y;
+        const panelY = root.borderThickness + panel.y;
         return y >= panelY - Config.border.rounding && y <= panelY + panel.height + Config.border.rounding;
     }
 
@@ -38,11 +39,11 @@ CustomMouseArea {
     }
 
     function inTopPanel(panel: Item, x: real, y: real): bool {
-        return y < borderThickness + panel.y + panel.height && withinPanelWidth(panel, x, y);
+        return y < root.borderThickness + panel.y + panel.height && withinPanelWidth(panel, x, y);
     }
 
     function inBottomPanel(panel: Item, x: real, y: real): bool {
-        return y > root.height - borderThickness - panel.height - Config.border.rounding && withinPanelWidth(panel, x, y);
+        return y > root.height - root.borderThickness - panel.height - Config.border.rounding && withinPanelWidth(panel, x, y);
     }
 
     function onWheel(event: WheelEvent): void {

@@ -1,7 +1,6 @@
 pragma ComponentBehavior: Bound
 
 import qs.components
-import qs.services
 import qs.config
 import Quickshell
 import QtQuick
@@ -17,7 +16,7 @@ Item {
     property int contentHeight
 
     readonly property real maxHeight: {
-        let max = screen.height - Visibilities.getBorderThickness(screen) * 2 - Appearance.spacing.large;
+        let max = screen.height - Config.border.thickness * 2 - Appearance.spacing.large;
         if (visibilities.dashboard)
             max -= panels.dashboard.nonAnimHeight;
         return max;

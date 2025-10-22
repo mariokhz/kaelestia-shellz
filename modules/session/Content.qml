@@ -12,8 +12,8 @@ Column {
 
     required property PersistentProperties visibilities
 
-    padding: Appearance.padding.large + 6
-    spacing: Appearance.spacing.large + 6
+    padding: Appearance.padding.large*1.4
+    spacing: Appearance.spacing.large*1.4
 
     SessionButton {
         id: logout

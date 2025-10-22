@@ -2,10 +2,8 @@ import Quickshell.Io
 
 JsonObject {
     property int thickness: Appearance.padding.normal
-    property int fullscreenThickness: 0
     property int rounding: Appearance.rounding.large
-
-    function effectiveThickness(hasFullscreen: bool): int {
-        return hasFullscreen ? fullscreenThickness : thickness;
-    }
+    // When a client is fullscreen, use this thickness for shell borders
+    // Defaults to 0 when not specified in the user's config file
+    property int fullscreenThickness: 0
 }

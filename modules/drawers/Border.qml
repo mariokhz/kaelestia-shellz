@@ -10,7 +10,8 @@ Item {
     id: root
 
     required property Item bar
-    required property int borderThickness
+    // Allow overriding border thickness (fall back to configured thickness)
+    property int borderThickness: Config.border.thickness
 
     anchors.fill: parent
 

@@ -12,12 +12,12 @@ Item {
     required property ShellScreen screen
     required property PersistentProperties visibilities
     required property BarPopouts.Wrapper popouts
-    required property int borderThickness
+    // Optional override for border thickness (provided by Drawers when needed)
+    property int borderThickness: Config.border.thickness
 
-    readonly property int baseThickness: Config.border.thickness
-    readonly property int padding: Math.max(Appearance.padding.smaller, baseThickness)
+    readonly property int padding: Math.max(Appearance.padding.smaller, root.borderThickness)
     readonly property int contentWidth: Config.bar.sizes.innerWidth + padding * 2
-    readonly property int exclusiveZone: Config.bar.persistent || visibilities.bar ? contentWidth : borderThickness
+    readonly property int exclusiveZone: Config.bar.persistent || visibilities.bar ? contentWidth : root.borderThickness
     readonly property bool shouldBeVisible: Config.bar.persistent || visibilities.bar || isHovered
     property bool isHovered
 
@@ -33,9 +33,8 @@ Item {
         content.item?.handleWheel(y, angleDelta);
     }
 
-    visible: true
-    implicitWidth: borderThickness
-    opacity: width > borderThickness ? 1 : 0
+    visible: width > root.borderThickness
+    implicitWidth: root.borderThickness
 
     states: State {
         name: "visible"
@@ -84,8 +83,6 @@ Item {
             screen: root.screen
             visibilities: root.visibilities
             popouts: root.popouts
-            opacity: root.shouldBeVisible ? 1 : 0
-            Behavior on opacity { Anim {} }
         }
     }
 }
