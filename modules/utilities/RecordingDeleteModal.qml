@@ -34,8 +34,8 @@ Loader {
         Item {
             anchors.fill: parent
             anchors.margins: -Appearance.padding.large
-            anchors.rightMargin: -Appearance.padding.large - Config.border.thickness
-            anchors.bottomMargin: -Appearance.padding.large - Config.border.thickness
+            anchors.rightMargin: -Appearance.padding.large - Borders.thickness
+            anchors.bottomMargin: -Appearance.padding.large - Borders.thickness
             opacity: 0.5
 
             StyledRect {
@@ -53,7 +53,7 @@ Loader {
 
                 ShapePath {
                     startX: -Config.border.rounding * 2
-                    startY: shape.height - Config.border.thickness
+                    startY: shape.height - Borders.thickness
                     strokeWidth: 0
                     fillGradient: LinearGradient {
                         orientation: LinearGradient.Horizontal
@@ -81,7 +81,7 @@ Loader {
                     }
                     PathLine {
                         relativeX: 0
-                        relativeY: Config.border.rounding + Config.border.thickness
+                        relativeY: Config.border.rounding + Borders.thickness
                     }
                     PathLine {
                         relativeX: -Config.border.rounding * 2
@@ -90,7 +90,7 @@ Loader {
                 }
 
                 ShapePath {
-                    startX: shape.width - Config.border.rounding - Config.border.thickness
+                    startX: shape.width - Config.border.rounding - Borders.thickness
                     strokeWidth: 0
                     fillGradient: LinearGradient {
                         orientation: LinearGradient.Vertical
@@ -118,7 +118,7 @@ Loader {
                         relativeY: -Config.border.rounding
                     }
                     PathLine {
-                        relativeX: Config.border.thickness
+                        relativeX: Borders.thickness
                         relativeY: 0
                     }
                     PathLine {

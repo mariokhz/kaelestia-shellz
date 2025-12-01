@@ -12,13 +12,12 @@ Item {
     required property ShellScreen screen
     required property PersistentProperties visibilities
     required property BarPopouts.Wrapper popouts
-    // Optional override for border thickness (provided by Drawers when needed)
-    property int borderThickness: Config.border.thickness
+    required property bool disabled
 
-    readonly property int padding: Math.max(Appearance.padding.smaller, root.borderThickness)
+    readonly property int padding: Math.max(Appearance.padding.smaller, Borders.thickness)
     readonly property int contentWidth: Config.bar.sizes.innerWidth + padding * 2
-    readonly property int exclusiveZone: Config.bar.persistent || visibilities.bar ? contentWidth : root.borderThickness
-    readonly property bool shouldBeVisible: Config.bar.persistent || visibilities.bar || isHovered
+    readonly property int exclusiveZone: !disabled && (Config.bar.persistent || visibilities.bar) ? contentWidth : Borders.thickness
+    readonly property bool shouldBeVisible: !disabled && (Config.bar.persistent || visibilities.bar || isHovered)
     property bool isHovered
 
     function closeTray(): void {
@@ -33,8 +32,8 @@ Item {
         content.item?.handleWheel(y, angleDelta);
     }
 
-    visible: width > root.borderThickness
-    implicitWidth: root.borderThickness
+    visible: width > Borders.thickness
+    implicitWidth: Borders.thickness
 
     states: State {
         name: "visible"
@@ -75,8 +74,6 @@ Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-
-        active: true
 
         sourceComponent: Bar {
             width: root.contentWidth

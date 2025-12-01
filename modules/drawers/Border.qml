@@ -10,8 +10,6 @@ Item {
     id: root
 
     required property Item bar
-    // Allow overriding border thickness (fall back to configured thickness)
-    property int borderThickness: Config.border.thickness
 
     anchors.fill: parent
 
@@ -38,7 +36,7 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            anchors.margins: root.borderThickness
+            anchors.margins: Borders.thickness
             anchors.leftMargin: root.bar.implicitWidth
             radius: Config.border.rounding
         }

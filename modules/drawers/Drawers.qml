@@ -18,24 +18,30 @@ Variants {
         id: scope
 
         required property ShellScreen modelData
+        readonly property bool barDisabled: {
+            const regexChecker = /^\^.*\$$/;
+            for (const filter of Config.bar.excludedScreens) {
+                // If filter is a regex
+                if (regexChecker.test(filter)) {
+                    if ((new RegExp(filter)).test(modelData.name))
+                        return true;
+                } else {
+                    if (filter === modelData.name)
+                        return true;
+                }
+            }
+            return false;
+        }
 
         Exclusions {
             screen: scope.modelData
             bar: bar
-            borderThickness: win.borderThickness
         }
 
         StyledWindow {
             id: win
 
             readonly property bool hasFullscreen: Hypr.monitorFor(screen)?.activeWorkspace?.toplevels.values.some(t => t.lastIpcObject.fullscreen === 2) ?? false
-            // Effective border thickness for this screen: use fullscreenThickness when a fullscreen app is present
-            property int borderThickness: hasFullscreen ? Config.border.fullscreenThickness : Config.border.thickness
-
-            Behavior on borderThickness {
-                Anim {}
-            }
-
             readonly property int dragMaskPadding: {
                 if (focusGrab.active || panels.popouts.isDetached)
                     return 0;
@@ -55,20 +61,23 @@ Variants {
                 visibilities.launcher = false;
                 visibilities.session = false;
                 visibilities.dashboard = false;
+                Borders.setFullscreen(scope.modelData.name, win.hasFullscreen);
             }
+
+            Component.onCompleted: Borders.setFullscreen(scope.modelData.name, win.hasFullscreen)
+            Component.onDestruction: Borders.setFullscreen(scope.modelData.name, false)
 
             screen: scope.modelData
             name: "drawers"
             WlrLayershell.exclusionMode: ExclusionMode.Ignore
-            // Place drawers in the Overlay layer so they render above fullscreen clients
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.keyboardFocus: visibilities.launcher || visibilities.session ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
             mask: Region {
                 x: bar.implicitWidth + win.dragMaskPadding
-                y: win.borderThickness + win.dragMaskPadding
-                width: win.width - bar.implicitWidth - win.borderThickness - win.dragMaskPadding * 2
-                height: win.height - win.borderThickness * 2 - win.dragMaskPadding * 2
+                y: Borders.thickness + win.dragMaskPadding
+                width: win.width - bar.implicitWidth - Borders.thickness - win.dragMaskPadding * 2
+                height: win.height - Borders.thickness * 2 - win.dragMaskPadding * 2
                 intersection: Intersection.Xor
 
                 regions: regions.instances
@@ -88,7 +97,7 @@ Variants {
                     required property Item modelData
 
                     x: modelData.x + bar.implicitWidth
-                    y: modelData.y + win.borderThickness
+                    y: modelData.y + Borders.thickness
                     width: modelData.width
                     height: modelData.height
                     intersection: Intersection.Subtract
@@ -129,15 +138,14 @@ Variants {
                     blurMax: 15
                     shadowColor: Qt.alpha(Colours.palette.m3shadow, 0.7)
                 }
+
                 Border {
                     bar: bar
-                    borderThickness: win.borderThickness
                 }
 
                 Backgrounds {
                     panels: panels
                     bar: bar
-                    borderThickness: win.borderThickness
                 }
             }
 
@@ -161,7 +169,6 @@ Variants {
                 visibilities: visibilities
                 panels: panels
                 bar: bar
-                borderThickness: win.borderThickness
 
                 Panels {
                     id: panels
@@ -169,7 +176,6 @@ Variants {
                     screen: scope.modelData
                     visibilities: visibilities
                     bar: bar
-                    borderThickness: win.borderThickness
                 }
 
                 BarWrapper {
@@ -181,8 +187,8 @@ Variants {
                     screen: scope.modelData
                     visibilities: visibilities
                     popouts: panels.popouts
-                    // pass effective border thickness so the bar can use fullscreenThickness when needed
-                    borderThickness: win.borderThickness
+
+                    disabled: scope.barDisabled
 
                     Component.onCompleted: Visibilities.bars.set(scope.modelData, this)
                 }
