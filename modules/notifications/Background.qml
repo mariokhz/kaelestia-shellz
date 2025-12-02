@@ -13,7 +13,7 @@ ShapePath {
     readonly property bool flatten: wrapper.height < rounding * 2
     readonly property real roundingY: flatten ? wrapper.height / 2 : rounding
 
-    strokeWidth: 1
+    strokeWidth: 0.5
     strokeColor: Colours.palette.m3surface
     fillColor: Colours.palette.m3surface
 
